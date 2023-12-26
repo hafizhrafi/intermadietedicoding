@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.intermadietedicoding.Adapter.StoryAdapter
+import com.example.intermadietedicoding.Login.Login
 import com.example.intermadietedicoding.R
 import com.example.intermadietedicoding.Upload.Upload
 import com.example.intermadietedicoding.databinding.ActivityListStory2Binding
@@ -35,8 +36,15 @@ class ListStory : AppCompatActivity() {
         )
 
         binding.btnUpload.setOnClickListener {
-            val intent = Intent(this@ListStory , Upload :: class.java)
+            val intent = Intent(this@ListStory, Upload::class.java)
             startActivity(intent)
+        }
+
+        binding.btnLogout.setOnClickListener {
+            prefs.edit().remove("TOKEN").commit()
+            val intent = Intent(this@ListStory, Login::class.java)
+            startActivity(intent)
+
         }
 
         val token = prefs.getString("TOKEN", "");

@@ -27,10 +27,10 @@ interface ApiService {
     @POST("stories")
     @Multipart
     fun postStories(
-        @Part("photo") photo: MultipartBody.Part,
-        @Field("description") description: String,
-        @Field("lat") lat: Float?,
-        @Field("lon") lon: Float?
+        @Part photo: MultipartBody.Part,
+        @Part("description") description: String,
+        @Part("lat") lat: Float?,
+        @Part("lon") lon: Float?
     ):Call<GeneralResponseHandler>
 
     @POST("stories/guest")

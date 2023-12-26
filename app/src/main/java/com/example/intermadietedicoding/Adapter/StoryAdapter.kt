@@ -1,9 +1,11 @@
 package com.example.intermadietedicoding.Adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,10 +15,12 @@ import com.example.intermadietedicoding.ListStory.ListStory
 import com.example.intermadietedicoding.databinding.ActivityItemRecycleBinding
 import com.example.intermadietedicoding.response.GettAllStoriesHandler
 
-class StoryAdapter(var listData: List<GettAllStoriesHandler>,var context: Context):RecyclerView.Adapter<StoryAdapter.MyViewHolder>() {
+class StoryAdapter(var listData: List<GettAllStoriesHandler>, var context: Context) :
+    RecyclerView.Adapter<StoryAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ActivityItemRecycleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ActivityItemRecycleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding, context)
     }
 
@@ -35,13 +39,18 @@ class StoryAdapter(var listData: List<GettAllStoriesHandler>,var context: Contex
             binding.apply {
                 Glide.with(itemView.context)
                     .load(user.photoUrl)
-                    .into(ivDetailPhoto)
+                    .into(ivItemDetail)
                 tvItemName.text = user.name
                 tvDetailDescription.text = user.description
                 layoutItem.setOnClickListener {
                     val intent = Intent(context, DetailStory::class.java)
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        context as Activity,
+                        ivItemDetail,
+                        "transition_image"
+                    )
                     intent.putExtra("idStory", user.id)
-                    context.startActivity(intent)
+                    context.startActivity(intent,options.toBundle())
 
                 }
             }

@@ -44,7 +44,7 @@ class DetailStory : AppCompatActivity() {
                     binding.apply {
                         Glide.with(this@DetailStory)
                             .load(response.body()!!.story!!.photoUrl)
-                            .into(ivDetailPhoto)}
+                            .into(ivDetail)}
                     binding.tvDetailName.text = response.body()!!.story!!.name
                     binding.tvDetailDescription.text = response.body()!!.story!!.description
                 } else {

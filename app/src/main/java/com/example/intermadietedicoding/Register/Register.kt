@@ -24,8 +24,8 @@ class Register : AppCompatActivity() {
 
         binding.btnRegister.setOnClickListener {
             var name = binding.edRegisterName.text.toString()
-            var email = binding.edRegisterEmail.text.toString()
-            var password = binding.edRegisterPassword.text.toString()
+            var email = binding.edRegisterEmail.editText?.text.toString()
+            var password = binding.edRegisterPassword.editText?.text.toString()
             val client = ApiConfig.getApiService().postRegister(name,email,password)
 
             client.enqueue(object : Callback<GeneralResponseHandler>{

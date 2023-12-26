@@ -33,8 +33,8 @@ class Login : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            var email = binding.edLoginEmail.text.toString()
-            var password = binding.edLoginPassword.text.toString()
+            var email = binding.edLoginEmail.editText?.text.toString()
+            var password = binding.edLoginPassword.editText?.text.toString()
             val client = ApiConfig.getApiService().postLogin(email, password)
             client.enqueue(object : Callback<GeneralResponseHandler> {
                 override fun onResponse(
