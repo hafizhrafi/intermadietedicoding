@@ -1,4 +1,4 @@
-package com.example.intermadietedicoding.customviews
+package com.example.intermadietedicoding.customeditteks
 
 import android.content.Context
 import android.text.Editable
@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class PasswordEditText : TextInputLayout {
+class passwordEdit : TextInputLayout {
 
     private lateinit var editText: TextInputEditText
 

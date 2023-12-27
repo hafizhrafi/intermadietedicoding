@@ -25,14 +25,14 @@
         android:id="@+id/ly"
         tools:ignore="MissingConstraints">
 
-        <com.example.intermadietedicoding.customviews.EmailEditText
+        <com.example.intermadietedicoding.customeditteks.emailEditTeks
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/ed_login_email"
             android:hint="Enter Your Email"
             android:backgroundTint="@color/black"
             />
-        <com.example.intermadietedicoding.customviews.PasswordEditText
+        <com.example.intermadietedicoding.customeditteks.passwordEdit
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"

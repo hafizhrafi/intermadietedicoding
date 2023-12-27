@@ -1,4 +1,4 @@
-package com.example.intermadietedicoding.customviews
+package com.example.intermadietedicoding.customeditteks
 
 import android.content.Context
 import android.text.Editable
@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class DefaultEditText : TextInputLayout {
+class emailEditTeks : TextInputLayout {
 
     private lateinit var editText: TextInputEditText
 
@@ -30,7 +30,7 @@ class DefaultEditText : TextInputLayout {
 
     private fun init() {
         editText = TextInputEditText(this.context)
-        editText.inputType = InputType.TYPE_CLASS_TEXT
+        editText.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         addView(editText)
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -38,9 +38,10 @@ class DefaultEditText : TextInputLayout {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                error = if (s.toString()
-                        .isEmpty()
-                ) "tidak boleh kosong" else null
+                error =
+                    if (s.toString().isEmpty()) "tidak boleh kosong"
+                    else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches())
+                        "isi email" else null
             }
 
             override fun afterTextChanged(s: Editable) {
