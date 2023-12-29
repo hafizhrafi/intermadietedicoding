@@ -4,6 +4,7 @@ import com.example.intermadietedicoding.response.GeneralResponseHandler
 import com.example.intermadietedicoding.response.GettAllStoriesHandler
 import com.example.intermadietedicoding.response.LoginResultResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,9 +29,9 @@ interface ApiService {
     @Multipart
     fun postStories(
         @Part photo: MultipartBody.Part,
-        @Part("description") description: String,
-        @Part("lat") lat: Float?,
-        @Part("lon") lon: Float?
+        @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody?,
+        @Part("lon") lon: RequestBody?
     ):Call<GeneralResponseHandler>
 
     @POST("stories/guest")

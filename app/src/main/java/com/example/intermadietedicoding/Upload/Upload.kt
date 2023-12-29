@@ -36,12 +36,11 @@ private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 
 
-
 class Upload : AppCompatActivity() {
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             binding.ivUploadPhoto.setImageURI(uri)
-            fileImage = uriToFile(uri,this@Upload)
+            fileImage = uriToFile(uri, this@Upload)
 
         }
     }
@@ -50,13 +49,18 @@ class Upload : AppCompatActivity() {
         val filesDir = context.externalCacheDir
         return File.createTempFile(timeStamp, ".jpg", filesDir)
     }
+
     fun uriToFile(imageUri: Uri, context: Context): File {
         val myFile = createCustomTempFile(context)
         val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
         val outputStream = FileOutputStream(myFile)
         val buffer = ByteArray(1024)
         var length: Int
-        while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
+        while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(
+            buffer,
+            0,
+            length
+        )
         outputStream.close()
         inputStream.close()
         return myFile
@@ -74,39 +78,42 @@ class Upload : AppCompatActivity() {
 
 
         binding.btnUpload.setOnClickListener {
-            if (fileImage != null){
+            if (binding.description.text.toString().isEmpty()) {
+                Toast.makeText(this@Upload, "Deskripsi tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else if (fileImage != null) {
                 var image: MultipartBody.Part = MultipartBody.Part.createFormData(
                     "photo", fileImage!!.name,
                     RequestBody.create(MediaType.parse("image/*"), fileImage)
                 )
 
-            val token = prefs.getString("TOKEN", "")
-            val client = ApiConfig.getApiService(token!!).postStories(
-                photo = image,
-                description = binding.description.text.toString(),
-                lat = null,
-                lon = null
-            )
-            client.enqueue(object :Callback<GeneralResponseHandler>{
-                override fun onResponse(
-                    call: Call<GeneralResponseHandler>,
-                    response: Response<GeneralResponseHandler>
-                ) {
-                    if (response.isSuccessful && !response.body()?.error!!){
-                        val intent = Intent(this@Upload, ListStory::class.java)
-                        startActivity(intent)
-                        finish()
-                    }else{
-                        Toast.makeText(this@Upload, "error", Toast.LENGTH_SHORT).show()
+                val token = prefs.getString("TOKEN", "")
+                val description:String = binding.description.text.toString()
+                val client = ApiConfig.getApiService(token!!).postStories(
+                    photo = image,
+                    description = RequestBody.create(MediaType.parse("text/plain"), description),
+                    lat = null,
+                    lon = null
+                )
+                client.enqueue(object : Callback<GeneralResponseHandler> {
+                    override fun onResponse(
+                        call: Call<GeneralResponseHandler>,
+                        response: Response<GeneralResponseHandler>
+                    ) {
+                        if (response.isSuccessful && !response.body()?.error!!) {
+                            val intent = Intent(this@Upload, ListStory::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@Upload, "error", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<GeneralResponseHandler>, t: Throwable) {
-                    Toast.makeText(this@Upload, "salah",Toast.LENGTH_SHORT).show()
-                }
+                    override fun onFailure(call: Call<GeneralResponseHandler>, t: Throwable) {
+                        Toast.makeText(this@Upload, "salah", Toast.LENGTH_SHORT).show()
+                    }
 
-            })
-            }else{
+                })
+            } else {
                 Toast.makeText(this@Upload, "gambar kosong", Toast.LENGTH_SHORT).show()
             }
 
