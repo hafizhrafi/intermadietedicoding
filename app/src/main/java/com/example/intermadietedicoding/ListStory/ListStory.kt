@@ -44,7 +44,7 @@ class ListStory : AppCompatActivity() {
             prefs.edit().remove("TOKEN").commit()
             val intent = Intent(this@ListStory, Login::class.java)
             startActivity(intent)
-
+            finish()
         }
 
         val token = prefs.getString("TOKEN", "");

@@ -49,6 +49,7 @@ class StoryAdapter(var listData: List<GettAllStoriesHandler>, var context: Conte
                         ivItemDetail,
                         "transition_image"
                     )
+                    intent.putExtra("storyData", user)
                     intent.putExtra("idStory", user.id)
                     context.startActivity(intent,options.toBundle())
 

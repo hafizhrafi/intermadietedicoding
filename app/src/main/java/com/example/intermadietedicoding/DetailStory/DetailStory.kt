@@ -28,34 +28,49 @@ class DetailStory : AppCompatActivity() {
 
 
         val idStory = intent.getStringExtra("idStory")
+        val storyData: GettAllStoriesHandler? =
+            intent.getParcelableExtra("storyData")
         val prefs: SharedPreferences = getSharedPreferences(
             "com.example.intermediatedicoding", MODE_PRIVATE
         )
 
-        val token = prefs.getString("TOKEN", "");
+        if (storyData == null) {
+            val token = prefs.getString("TOKEN", "");
 
-        val client = ApiConfig.getApiService(token!!).getStoriesId(id = idStory!!)
-        client.enqueue(object : Callback<GeneralResponseHandler> {
-            override fun onResponse(
-                call: Call<GeneralResponseHandler>,
-                response: Response<GeneralResponseHandler>
-            ) {
-                if (response.isSuccessful && !response.body()?.error!!) {
-                    binding.apply {
-                        Glide.with(this@DetailStory)
-                            .load(response.body()!!.story!!.photoUrl)
-                            .into(ivDetail)}
-                    binding.tvDetailName.text = response.body()!!.story!!.name
-                    binding.tvDetailDescription.text = response.body()!!.story!!.description
-                } else {
-                    Toast.makeText(this@DetailStory, response.message(), Toast.LENGTH_SHORT).show()
+            val client = ApiConfig.getApiService(token!!).getStoriesId(id = idStory!!)
+            client.enqueue(object : Callback<GeneralResponseHandler> {
+                override fun onResponse(
+                    call: Call<GeneralResponseHandler>,
+                    response: Response<GeneralResponseHandler>
+                ) {
+                    if (response.isSuccessful && !response.body()?.error!!) {
+                        binding.apply {
+                            Glide.with(this@DetailStory)
+                                .load(response.body()!!.story!!.photoUrl)
+                                .into(ivDetail)
+                        }
+                        binding.tvDetailName.text = response.body()!!.story!!.name
+                        binding.tvDetailDescription.text = response.body()!!.story!!.description
+                    } else {
+                        Toast.makeText(this@DetailStory, response.message(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<GeneralResponseHandler>, t: Throwable) {
+                    TODO("Not yet implemented")
                 }
             }
 
-            override fun onFailure(call: Call<GeneralResponseHandler>, t: Throwable) {
-                TODO("Not yet implemented")
+            )
+        } else {
+            binding.apply {
+                Glide.with(this@DetailStory)
+                    .load(storyData.photoUrl)
+                    .into(ivDetail)
             }
+            binding.tvDetailName.text = storyData.name
+            binding.tvDetailDescription.text = storyData.description
         }
-        )
     }
 }

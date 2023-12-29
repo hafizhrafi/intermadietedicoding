@@ -21,9 +21,11 @@ class MainActivity : AppCompatActivity() {
         if (token == null) {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
+            finish()
         } else {
             val intent = Intent(this, ListStory::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

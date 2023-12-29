@@ -54,6 +54,7 @@ class Login : AppCompatActivity() {
 
                         val intent = Intent(this@Login, ListStory::class.java)
                         startActivity(intent)
+                        finish()
                     } else {
                         Toast.makeText(this@Login, response.message(), Toast.LENGTH_SHORT).show()
                     }

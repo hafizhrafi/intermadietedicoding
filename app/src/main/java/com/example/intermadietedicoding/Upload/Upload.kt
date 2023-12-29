@@ -95,6 +95,7 @@ class Upload : AppCompatActivity() {
                     if (response.isSuccessful && !response.body()?.error!!){
                         val intent = Intent(this@Upload, ListStory::class.java)
                         startActivity(intent)
+                        finish()
                     }else{
                         Toast.makeText(this@Upload, "error", Toast.LENGTH_SHORT).show()
                     }
