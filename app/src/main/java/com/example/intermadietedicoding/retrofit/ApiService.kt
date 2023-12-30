@@ -46,7 +46,7 @@ interface ApiService {
     fun getStories(
         @Query("page") page: Int?,
         @Query("size") size: Int?,
-        @Query("locarion") location: Boolean?
+        @Query("location") location: Int?
     ):Call<GeneralResponseHandler>
 
     @GET("  stories/{id}")

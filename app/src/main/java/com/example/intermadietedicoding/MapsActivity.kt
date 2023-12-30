@@ -1,5 +1,7 @@
 package com.example.intermadietedicoding
 
+import android.content.Intent
+import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -10,12 +12,19 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.intermadietedicoding.databinding.ActivityMapsBinding
+import com.example.intermadietedicoding.response.GettAllStoriesHandler
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private var mLocationRequest: LocationRequest? = null
+    private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 secs */
+    private val FASTEST_INTERVAL: Long = 2000
 
+    private var latitude = 0.0
+    private var longitude = 0.0
+    var listLocation = emptyList<GettAllStoriesHandler>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,6 +34,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
     }
 
     /**
@@ -38,10 +49,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        val i: Intent = intent
+        listLocation = i.getSerializableExtra("listLocation") as List<GettAllStoriesHandler>
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        listLocation.forEach {
+            val latLng = LatLng(it.lat!!.toDouble(), it.lon!!.toDouble())
+            mMap.addMarker(MarkerOptions().position(latLng).title(it.name))
+        }
+        val latLng =
+            LatLng(listLocation.last().lat!!.toDouble(), listLocation.last().lon!!.toDouble())
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 }
